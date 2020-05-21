@@ -1,0 +1,31 @@
+const http = require('http');
+const port = 8000;
+const url = require('url');
+
+
+const requestHandler = (request, response) => {
+    console.log(request.url);
+    const exampleUrl = '/about?name=Ringo&city=Liverpool'
+    const parsedUrl = url.parse(exampleUrl, true);
+    const urlNoQuery = '/?name=&city=';
+    const parsedUrlNoQuery = url.parse(urlNoQuery, true);
+    const exampleVide = '/'
+    const parsedUrlVide = url.parse(exampleVide, true);
+   
+    if (request.url === '/about?name=Ringo&city=Liverpool' ) {
+        response.end(`Hello ${parsedUrl.query.name} from ${parsedUrl.query.city}`)
+    } else if (request.url === '/?name=&city=') { 
+            response.end(`Hello <name> from <city>!`) 
+        } else  { 
+            response.end(`Please provide name and city parameters`) 
+        }
+    }
+  ;
+  const server = http.createServer(requestHandler);
+  server.listen(port, (err) => {
+    if (err) {
+      console.error('Something bad happened');
+    } else {
+      console.log(`server is listening on ${port}`);
+    }
+  });
